@@ -27,11 +27,11 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Pull Docker image from Docker Hub
-      run: docker pull abhiraj860/mongo_cont:${{ inputs.image_tag }}
+      run: docker pull abhiraj860/external_container:${{ inputs.image_tag }}
 
     - name: Run Docker container
       run: |
-        docker run --privileged -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/mongo_cont:${{ inputs.image_tag }} > container_logs.txt
+        docker run --privileged -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/external_container:${{ inputs.image_tag }} > container_logs.txt
 
     - name: Install curl
       run: sudo apt-get update && sudo apt-get install -y curl
