@@ -1,0 +1,32 @@
+name: Manual Docker Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker Image Tag'
+        required: false
+        default: 'latest'
+
+jobs:
+  run-docker-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Pull Docker image from Docker Hub
+      run: docker pull abhiraj860/node_python_docker:${{ inputs.image_tag }}
+
+    - name: Run Docker container
+      run: docker run --privileged -d --name my-container abhiraj860/node_python_docker:${{ inputs.image_tag }}
+
+    - name: Verify Docker container is running
+      run: docker ps -a
+
+    - name: Stop and remove Docker container
+      if: always()
+      run: |
+        docker stop my-container
+        docker rm my-container
