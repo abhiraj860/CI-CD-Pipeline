@@ -26,9 +26,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Pull Docker image from Docker Hub
-      run: docker pull abhiraj860/external_container:${{ inputs.image_tag }}
-
     - name: Run Docker container
       run: |
         docker run --privileged -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/external_container:${{ inputs.image_tag }} > container_logs.txt
