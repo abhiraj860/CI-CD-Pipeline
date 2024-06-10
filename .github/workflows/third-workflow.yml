@@ -33,13 +33,15 @@ jobs:
       run: sleep 10
 
     - name: Send POST request to the Node.js application
-      run: |
+    run: |
         RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST http://localhost:3000/pull-and-run \
         -H "Content-Type: application/json" \
         -d '{"name": "Abhiraj Aditya312313", "value": 4343434123123}' \
         --insecure)
         echo "HTTP response code: $RESPONSE"
+        echo "Response body:"
         cat response.txt
+
 
 
     - name: Verify the insertion message
