@@ -1,4 +1,4 @@
-name: Manual Docker Run
+name: Manual Second Docker Run 
 
 on:
   workflow_dispatch:
@@ -8,8 +8,10 @@ on:
         required: false
         default: 'latest'
       api_port:
-        description: 3000
+        description: 'API Port'
         required: true
+        default: '3000'
+
 jobs:
   run-docker-image:
     runs-on: ubuntu-latest
@@ -22,10 +24,10 @@ jobs:
       run: docker pull abhiraj860/node_python_docker:${{ inputs.image_tag }}
 
     - name: Run Docker container
-      run: docker run --privileged -d -p ${{ inputs.api_port }}:{{ inputs.api_port }} --name my-container abhiraj860/node_python_docker:${{ inputs.image_tag }}
+      run: docker run -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/node_python_docker:${{ inputs.image_tag }}
 
-    - name: Install curl
-      run: sudo apt-get update && sudo apt-get install -y curl
+    - name: Install curl and jq
+      run: sudo apt-get update && sudo apt-get install -y curl jq
 
     - name: Wait for the container to be ready
       run: sleep 10
