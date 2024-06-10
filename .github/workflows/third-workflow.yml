@@ -1,4 +1,4 @@
-name: Fourth Manual Docker Run
+name: Manual fifth Docker Run
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
       run: docker pull abhiraj860/node_python_docker:${{ inputs.image_tag }}
 
     - name: Run Docker container
-      run: docker run -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/node_python_docker:${{ inputs.image_tag }}
+      run: docker run --privileged -d -p ${{ inputs.api_port }}:${{ inputs.api_port }} --name my-container abhiraj860/node_python_docker:${{ inputs.image_tag }}
 
     - name: Install curl
       run: sudo apt-get update && sudo apt-get install -y curl
@@ -33,16 +33,12 @@ jobs:
       run: sleep 10
 
     - name: Send POST request to the Node.js application
-    run: |
-        RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST http://localhost:3000/pull-and-run \
+      run: |
+        RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST http://localhost:${{ inputs.api_port }}/pull-and-run \
         -H "Content-Type: application/json" \
-        -d '{"name": "Abhiraj Aditya312313", "value": 4343434123123}' \
-        --insecure)
+        -d '{"name": "Abhiraj Aditya312313", "value": 4343434123123}')
         echo "HTTP response code: $RESPONSE"
-        echo "Response body:"
         cat response.txt
-
-
 
     - name: Verify the insertion message
       run: |
